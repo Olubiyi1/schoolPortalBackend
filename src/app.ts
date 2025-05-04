@@ -7,4 +7,5 @@ app.use(express.json())
 // db connection
 connectDb()
 
+
 export default app;
