@@ -10,9 +10,11 @@ export const validateRequest = (schema: Joi.ObjectSchema) => {
         message: "Validation failed",
         errors: error.details.map((detail) => detail.message),
       });
-      return;  // Ensure function ends here
-    }
 
-    next();  // Continue to the next middleware
+      // / Ensure function ends here
+      return;  
+    }
+    // Continue to the next middleware
+    next();  
   };
 };
