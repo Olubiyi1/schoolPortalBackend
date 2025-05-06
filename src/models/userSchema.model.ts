@@ -1,4 +1,5 @@
-import mongoose,{Schema,Document, mongo} from "mongoose";
+import { boolean, string } from "joi";
+import mongoose,{Schema,Document} from "mongoose";
 
 export interface IUser extends Document{
     firstname: string,
@@ -6,7 +7,9 @@ export interface IUser extends Document{
     email:string,
     username:string,
     password:string,
-    section:string
+    section:string,
+    isVerified: boolean,
+    verificationToken?: string;
 }
 
 const userSchema:Schema = new mongoose.Schema(
@@ -40,6 +43,13 @@ const userSchema:Schema = new mongoose.Schema(
         "section":{
             type:String,
             required:[true,"enter section"]
+        },
+        "isVerified":{
+            type : Boolean,
+            default: false
+        },
+        "verificationToken":{
+            type:String
         }
     },
     {timestamps:true}

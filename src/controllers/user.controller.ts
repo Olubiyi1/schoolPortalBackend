@@ -5,6 +5,7 @@ import ResponseHandler from "../utils/responseHandlers";
 export const registerUser = async (req:Request, res:Response)=>{
     try{
         const {error,data} = await createUser(req.body)
+        
 
         if(error){
             return ResponseHandler.validationError(res,null,error)

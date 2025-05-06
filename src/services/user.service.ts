@@ -1,5 +1,6 @@
 import userModel,{IUser} from "../models/userSchema.model";
 import { hashPassword } from "../guards/guards";
+import crypto from "crypto"
 
 
 export const createUser = async (userData:IUser)=>{
