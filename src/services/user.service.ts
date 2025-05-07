@@ -36,3 +36,13 @@ export const createUser = async (userData:IUser)=>{
         return { error : "failed to register new user", data : null}
     }
 }
+
+// user logim
+export const userLogin = ()=>{
+    try{
+
+    }
+    catch(error){
+
+    }
+}
