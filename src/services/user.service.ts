@@ -1,7 +1,8 @@
 import userModel,{IUser} from "../models/userSchema.model";
-import { hashPassword } from "../guards/guards";
+import { comparePassword, hashPassword, createJwt } from "../guards/guards";
 import crypto from "crypto"
 import sendVerificationEmail from "../helpers/sendVerficationMail";
+
 
 
 export const createUser = async (userData:IUser)=>{
@@ -27,8 +28,17 @@ export const createUser = async (userData:IUser)=>{
 
         // savig new user created
         const savedUser =  await newUser.save()
+
+         // creatjwt
+         const token = createJwt(
+            {
+                id: savedUser.id,
+                email:savedUser.email
+            }
+        )
+        return { error:null, data:token}
         
-        return { error : null, data:savedUser}
+        // return { error : null, data:savedUser}
        
     }
     catch(error){
@@ -37,12 +47,34 @@ export const createUser = async (userData:IUser)=>{
     }
 }
 
-// user logim
-export const userLogin = ()=>{
+// user login
+export const userLogin =async (email:string,password:string)=>{
     try{
+        // find user by email
+        const user = await userModel.findOne({email});
+
+        // if no user found with the email
+        if(!user){
+            return {error: "invalid email or password", data:null}
+        }
+
+        // verify password match
+        const isPasswordValid = await comparePassword(password,user.password)
+        if(!isPasswordValid){
+            return {error :"invalid email or password",data:null}
+        }
+
+        // creatjwt
+        const token = createJwt(
+            {
+                id: user.id,
+                email:user.email
+            }
+        )
+        return { error:null, data:token}
 
     }
-    catch(error){
-
+    catch(error:any){
+        return {error: error.message}
     }
 }
