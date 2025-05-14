@@ -1,6 +1,7 @@
 import { createUser,userLogin } from "../services/user.service";
 import { Response, Request } from "express";
 import ResponseHandler from "../utils/responseHandlers";
+import { handleForgotPassword, handleResetPassword } from "../services/passwordReset.service";
 
 export const registerUser = async (req:Request, res:Response)=>{
     try{
@@ -44,3 +45,6 @@ export const loginUser = async (req:Request,res:Response)=>{
 
     }
 }
+
+
+

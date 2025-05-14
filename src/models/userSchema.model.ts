@@ -10,6 +10,8 @@ export interface IUser extends Document{
     section:string,
     isVerified: boolean,
     verificationToken?: string;
+    resetPasswordToken?: string;
+    resetPasswordExpires?: Date;
 }
 
 const userSchema:Schema = new mongoose.Schema(
@@ -50,6 +52,15 @@ const userSchema:Schema = new mongoose.Schema(
         },
         "verificationToken":{
             type:String
+        },
+        "resetPasswordToken": {
+            type:  String,
+            default : null
+        },
+
+        "resetPasswordExpires":{
+            type: Date,
+            default: null
         }
     },
     {timestamps:true}

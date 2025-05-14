@@ -1,7 +1,7 @@
 import userModel,{IUser} from "../models/userSchema.model";
 import { comparePassword, hashPassword, createJwt } from "../guards/guards";
 import crypto from "crypto"
-import sendVerificationEmail from "../helpers/sendVerficationMail";
+import sendVerificationEmail from "../helpers/sendEmail";
 
 
 
@@ -21,7 +21,7 @@ export const createUser = async (userData:IUser)=>{
         const verificationToken = crypto.randomBytes(32).toString("hex");
 
         // creating a new user
-        const newUser =  new userModel({...userData,password, verificationToken})
+        const newUser =  new userModel({...userData,password, verificationToken, isVerified:false})
 
         // send verification mail
         await sendVerificationEmail(newUser.email, verificationToken);
@@ -36,9 +36,7 @@ export const createUser = async (userData:IUser)=>{
                 email:savedUser.email
             }
         )
-        return { error:null, data:token}
-        
-        // return { error : null, data:savedUser}
+        return { error:null, data:"Registration successful. Please check your email to verify your account."}
        
     }
     catch(error){
@@ -57,6 +55,12 @@ export const userLogin =async (email:string,password:string)=>{
         if(!user){
             return {error: "invalid email or password", data:null}
         }
+
+         // Check if user is verified
+        if (!user.isVerified) {
+            return { error: "Please verify your email before logging in", data: null };
+        }
+  
 
         // verify password match
         const isPasswordValid = await comparePassword(password,user.password)
@@ -78,3 +82,51 @@ export const userLogin =async (email:string,password:string)=>{
         return {error: error.message}
     }
 }
+
+// FORGOT PASSWORD
+export const handleForgotPassword = async (email: string) => {
+  const user = await userModel.findOne({ email });
+
+  if (!user) {
+    return { error: "User with this email does not exist", data: null };
+  }
+
+  const token = crypto.randomBytes(32).toString("hex");
+  const expires = new Date(Date.now() + 15 * 60 * 1000); // expires in 15 mins
+
+  user.resetPasswordToken = token;
+  user.resetPasswordExpires = expires;
+  await user.save();
+
+  const resetLink = `http://localhost:3300/api/users/reset-password?token=${token}`;
+
+  await sendVerificationEmail(user.email, token, "Reset Your Password", resetLink); // Modify `sendEmail` if needed
+
+  return {
+    error: null,
+    data: "Reset password link sent to your email",
+  };
+};
+
+// reset password
+export const handleResetPassword = async (token: string, newPassword: string) => {
+  const user = await userModel.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: new Date() },
+  });
+
+  if (!user) {
+    return { error: "Invalid or expired token", data: null };
+  }
+
+  user.password = hashPassword(newPassword);
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+
+  await user.save();
+
+  return {
+    error: null,
+    data: "Password has been reset successfully",
+  };
+};

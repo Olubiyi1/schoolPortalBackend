@@ -3,6 +3,7 @@ import { registerUserValidationSchema } from "../validationSchema/user.validatio
 import { registerUser,loginUser } from "../controllers/user.controller";
 import { validateRequest } from "../middlewares/userValidationMiddleware";
 import { verifyEmail } from "../controllers/emailVerification.controller";
+import { forgotPassword, resetPassword} from "../controllers/resetPassword.controller"
 const router = express.Router()
 
 router.get("/",(req,res)=>{
@@ -10,7 +11,9 @@ router.get("/",(req,res)=>{
 })
 
 router.post("/signup",validateRequest(registerUserValidationSchema),registerUser)
-router.get("/verify",verifyEmail)
+router.get("/verify-email",verifyEmail)
 router.post("login",validateRequest(registerUserValidationSchema),loginUser)
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 
 export default router;

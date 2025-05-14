@@ -8,18 +8,21 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const sendVerificationEmail = async (to: string, token: string) => {
-  const verificationLink = `http://localhost:3300/api/users/verify?token=${token}`;
+const sendVerificationEmail = async (to: string, subject: string, html:string) => {
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to,
-    subject: "Verify Your Email",
-    html: `<p>Please click the link to verify your email: <a href="${verificationLink}">Verify Email</a></p>`
+    subject,
+    html,
   };
-
+ 
   await transporter.sendMail(mailOptions);
 };
+
+const sendPasswordReset = async ()=>{
+  
+}
 
 export default sendVerificationEmail;
 
