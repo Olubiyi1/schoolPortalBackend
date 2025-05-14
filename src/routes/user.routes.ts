@@ -1,9 +1,9 @@
 import express from "express";
 import { registerUserValidationSchema } from "../validationSchema/user.validation";
-import { registerUser,loginUser } from "../controllers/user.controller";
+import { registerUser,loginUser, resetPassword, forgotPassword } from "../controllers/user.controller";
 import { validateRequest } from "../middlewares/userValidationMiddleware";
 import { verifyEmail } from "../controllers/emailVerification.controller";
-import { forgotPassword, resetPassword} from "../controllers/resetPassword.controller"
+
 const router = express.Router()
 
 router.get("/",(req,res)=>{

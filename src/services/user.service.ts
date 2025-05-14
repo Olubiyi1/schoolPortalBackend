@@ -1,7 +1,7 @@
 import userModel,{IUser} from "../models/userSchema.model";
 import { comparePassword, hashPassword, createJwt } from "../guards/guards";
 import crypto from "crypto"
-import sendVerificationEmail from "../helpers/sendEmail";
+import { sendVerificationEmail, sendForgotPasswordEmail, sendResetPasswordSuccessEmail } from "../helpers/sendEmail";
 
 
 
@@ -36,7 +36,7 @@ export const createUser = async (userData:IUser)=>{
                 email:savedUser.email
             }
         )
-        return { error:null, data:"Registration successful. Please check your email to verify your account."}
+        return { error:null, data:"Registration successful. Please check your email to verify your account.",token}
        
     }
     catch(error){
@@ -83,50 +83,58 @@ export const userLogin =async (email:string,password:string)=>{
     }
 }
 
-// FORGOT PASSWORD
+// FORGOT PASSWORD 
 export const handleForgotPassword = async (email: string) => {
-  const user = await userModel.findOne({ email });
+  try {
+    const user = await userModel.findOne({ email });
 
-  if (!user) {
-    return { error: "User with this email does not exist", data: null };
+    if (!user) {
+      return { error: "User with this email does not exist", data: null };
+    }
+
+    const token = crypto.randomBytes(32).toString("hex");
+    const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = expires;
+    await user.save();
+
+    await sendForgotPasswordEmail(user.email, token);
+
+    return {
+      error: null,
+      data: "Reset password link sent to your email.",
+    };
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    return { error: "Failed to initiate password reset", data: null };
   }
-
-  const token = crypto.randomBytes(32).toString("hex");
-  const expires = new Date(Date.now() + 15 * 60 * 1000); // expires in 15 mins
-
-  user.resetPasswordToken = token;
-  user.resetPasswordExpires = expires;
-  await user.save();
-
-  const resetLink = `http://localhost:3300/api/users/reset-password?token=${token}`;
-
-  await sendVerificationEmail(user.email, token, "Reset Your Password", resetLink); // Modify `sendEmail` if needed
-
-  return {
-    error: null,
-    data: "Reset password link sent to your email",
-  };
 };
-
-// reset password
+// RESET PASSWORD
 export const handleResetPassword = async (token: string, newPassword: string) => {
-  const user = await userModel.findOne({
-    resetPasswordToken: token,
-    resetPasswordExpires: { $gt: new Date() },
-  });
+  try {
+    const user = await userModel.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: new Date() },
+    });
 
-  if (!user) {
-    return { error: "Invalid or expired token", data: null };
+    if (!user) {
+      return { error: "Invalid or expired token", data: null };
+    }
+
+    user.password = hashPassword(newPassword);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+    await sendResetPasswordSuccessEmail(user.email);
+
+    return {
+      error: null,
+      data: "Password has been reset successfully.",
+    };
+  } catch (error) {
+    console.error("Reset password error:", error);
+    return { error: "Failed to reset password", data: null };
   }
-
-  user.password = hashPassword(newPassword);
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpires = undefined;
-
-  await user.save();
-
-  return {
-    error: null,
-    data: "Password has been reset successfully",
-  };
 };

@@ -1,7 +1,7 @@
-import { createUser,userLogin } from "../services/user.service";
+import { createUser,userLogin, handleForgotPassword, handleResetPassword } from "../services/user.service";
 import { Response, Request } from "express";
 import ResponseHandler from "../utils/responseHandlers";
-import { handleForgotPassword, handleResetPassword } from "../services/passwordReset.service";
+
 
 export const registerUser = async (req:Request, res:Response)=>{
     try{
@@ -46,5 +46,51 @@ export const loginUser = async (req:Request,res:Response)=>{
     }
 }
 
+// forgot password
+export const forgotPassword = async (req: Request, res: Response) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "Please provide an email" });
+  }
+
+  try {
+    const result = await handleForgotPassword(email);
+
+    if (result.error) {
+        return ResponseHandler.validationError(res,null,result.error)
+    //   return res.status(400).json({ error: result.error });
+    }
+
+    // return res.status(200).json({ message: result.data });
+    return ResponseHandler.success(res,result)
+  } catch (error:any) {
+    console.error("Forgot password error:", error);
+    // return res.status(500).json({ error: "Internal Server Error" });
+    return ResponseHandler.validationError(res,null,error.message)
+  }
+};
+
+// Reset password
+export const resetPassword = async (req: Request, res: Response) => {
+  const { token, newPassword } = req.body;
+
+  if (!token || !newPassword) {
+    return res.status(400).json({ error: "Please provide both token and new password" });
+  }
+
+  try {
+    const result = await handleResetPassword(token, newPassword);
+
+    if (result.error) {
+      return res.status(400).json({ error: result.error });
+    }
+
+    return res.status(200).json({ message: result.data });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 
