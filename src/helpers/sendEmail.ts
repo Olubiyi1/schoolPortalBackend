@@ -5,7 +5,7 @@ export const sendVerificationEmail = async (to: string, token: string) => {
   const subject = "Verify Your Email Address";
   const html = `
     <h3>Email Verification</h3>
-    <p>Thanks for registering. Please verify your email by clicking the link below:</p>
+    <p>Thanks for registering. Please verify your email by clicking the link below to complete your registration:</p>
     <a href="${verificationLink}">${verificationLink}</a>
     <p>This link will expire in 24 hours.</p>
   `;

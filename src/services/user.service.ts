@@ -9,10 +9,15 @@ export const createUser = async (userData:IUser)=>{
     try{
         // checking if email already exist before creating a new one
         const existingUser = await userModel.findOne({email:userData.email});
+        const existingUsername = await userModel.findOne({username:userData.username})
 
         if(existingUser){
             return{error:"email already exists", data:null}
         }
+        if(existingUsername){
+          return {error: "username already exists" , data:null}
+        }
+        
         
         // hashing password before saving
         const password = hashPassword(userData.password)
@@ -36,6 +41,8 @@ export const createUser = async (userData:IUser)=>{
                 email:savedUser.email
             }
         )
+        
+        console.log(token)
         return { error:null, data:"Registration successful. Please check your email to verify your account.",token}
        
     }
@@ -106,7 +113,7 @@ export const handleForgotPassword = async (email: string) => {
       data: "Reset password link sent to your email.",
     };
   } catch (error) {
-    console.error("Forgot password error:", error);
+    // console.error("Forgot password error:", error);
     return { error: "Failed to initiate password reset", data: null };
   }
 };

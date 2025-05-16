@@ -75,3 +75,9 @@ export const registerUserValidationSchema:Joi.ObjectSchema<any>=Joi.object({
     })
 
 })
+
+
+export const loginValidationSchema = Joi.object({
+  email: Joi.string().email().required().lowercase().trim(),
+  password: Joi.string().required()
+});

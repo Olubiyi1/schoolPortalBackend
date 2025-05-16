@@ -48,49 +48,43 @@ export const loginUser = async (req:Request,res:Response)=>{
 
 // forgot password
 export const forgotPassword = async (req: Request, res: Response) => {
-  const { email } = req.body;
+    try {
+        const { email } = req.body;
 
-  if (!email) {
-    return res.status(400).json({ error: "Please provide an email" });
-  }
+        if (!email) {
+            return ResponseHandler.validationError(res, null, "Please provide an email");
+        }
 
-  try {
-    const result = await handleForgotPassword(email);
+        const result = await handleForgotPassword(email);
 
-    if (result.error) {
-        return ResponseHandler.validationError(res,null,result.error)
-    //   return res.status(400).json({ error: result.error });
+        if (result.error) {
+            return ResponseHandler.validationError(res, null, result.error);
+        }
+
+        return ResponseHandler.success(res, result.data, "Password reset link sent successfully");
+    } catch (error: any) {
+        console.error("Forgot password error:", error);
+        return ResponseHandler.validationError(res, null, error.message);
     }
-
-    // return res.status(200).json({ message: result.data });
-    return ResponseHandler.success(res,result)
-  } catch (error:any) {
-    console.error("Forgot password error:", error);
-    // return res.status(500).json({ error: "Internal Server Error" });
-    return ResponseHandler.validationError(res,null,error.message)
-  }
 };
 
-// Reset password
 export const resetPassword = async (req: Request, res: Response) => {
-  const { token, newPassword } = req.body;
+    try {
+        const { token, newPassword } = req.body;
 
-  if (!token || !newPassword) {
-    return res.status(400).json({ error: "Please provide both token and new password" });
-  }
+        if (!token || !newPassword) {
+            return ResponseHandler.validationError(res, null, "Please provide both token and new password");
+        }
 
-  try {
-    const result = await handleResetPassword(token, newPassword);
+        const result = await handleResetPassword(token, newPassword);
 
-    if (result.error) {
-      return res.status(400).json({ error: result.error });
+        if (result.error) {
+            return ResponseHandler.validationError(res, null, result.error);
+        }
+
+        return ResponseHandler.success(res, result.data, "Password reset successfully");
+    } catch (error: any) {
+        console.error("Reset password error:", error);
+        return ResponseHandler.validationError(res, null, error.message);
     }
-
-    return res.status(200).json({ message: result.data });
-  } catch (error) {
-    console.error("Reset password error:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
 };
-
-

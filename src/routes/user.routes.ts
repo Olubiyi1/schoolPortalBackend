@@ -1,5 +1,5 @@
 import express from "express";
-import { registerUserValidationSchema } from "../validationSchema/user.validation";
+import { registerUserValidationSchema, loginValidationSchema } from "../validationSchema/user.validation";
 import { registerUser,loginUser, resetPassword, forgotPassword } from "../controllers/user.controller";
 import { validateRequest } from "../middlewares/userValidationMiddleware";
 import { verifyEmail } from "../controllers/emailVerification.controller";
@@ -12,7 +12,7 @@ router.get("/",(req,res)=>{
 
 router.post("/signup",validateRequest(registerUserValidationSchema),registerUser)
 router.get("/verify-email",verifyEmail)
-router.post("login",validateRequest(registerUserValidationSchema),loginUser)
+router.post("/login",validateRequest(loginValidationSchema),loginUser)
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 
