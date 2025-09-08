@@ -1,7 +1,9 @@
 import emailTransporter from "../helpers/emailTransporter"
 
 export const sendVerificationEmail = async (to: string, token: string) => {
-  const verificationLink = `http://localhost:3300/api/users/verify-email?token=${token}`;
+
+  // verifcation link pointing to my frontend_url  not the backend url
+  const verificationLink = `http://localhost:5173/verify-email?token=${token}`;
   const subject = "Verify Your Email Address";
   const html = `
     <h3>Email Verification</h3>
