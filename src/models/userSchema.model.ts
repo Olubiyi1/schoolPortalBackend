@@ -3,11 +3,11 @@ import mongoose,{Schema,Document} from "mongoose";
 
 export interface IUser extends Document{
     firstname: string,
-    lastname:string,
+    surname:string,
     email:string,
     username:string,
     password:string,
-    section:string,
+    department:string,
     isVerified: boolean,
     verificationToken?: string;
     resetPasswordToken?: string;
@@ -20,9 +20,9 @@ const userSchema:Schema = new mongoose.Schema(
             type:String,
             required:[true,"enter firstname"]
         },
-        "lastname":{
+        "surname":{
             type:String,
-            required:[true,"enter lastname"]
+            required:[true,"enter surname"]
         },
         
         "email":{
@@ -42,9 +42,9 @@ const userSchema:Schema = new mongoose.Schema(
             required:[true,"enter password"]
         },
 
-        "section":{
+        "department":{
             type:String,
-            required:[true,"enter section"]
+            required:[true,"enter department"]
         },
         "isVerified":{
             type : Boolean,

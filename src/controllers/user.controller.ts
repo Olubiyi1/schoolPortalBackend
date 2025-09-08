@@ -31,8 +31,8 @@ export const loginUser = async (req:Request,res:Response)=>{
         // checking if email and password exists befire signing in
         if(!email || !password){
             return ResponseHandler.validationError(res,null,"Email and pasword are required")
-
         }
+      
         const {error,data} = await userLogin(email,password)
 
         if(error){
@@ -42,7 +42,6 @@ export const loginUser = async (req:Request,res:Response)=>{
     }
     catch(error:any){
         return ResponseHandler.validationError(res,null,error.message)
-
     }
 }
 

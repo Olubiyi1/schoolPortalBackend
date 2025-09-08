@@ -12,16 +12,16 @@ export const registerUserValidationSchema:Joi.ObjectSchema<any>=Joi.object({
       'string.min': 'Firstname must be at least 3 characters long',
       'string.max': 'Firstname cannot exceed 50 characters'
     }),
-    lastname:Joi.string()
+    surname:Joi.string()
     .trim()
     .min(3)
     .max(50)
     .required()
     .messages({
-        "any.required":"Please enter lastname",
-        'string.empty': 'lastname cannot be empty',
-      'string.min': 'lastname must be at least 3 characters long',
-      'string.max': 'lastname cannot exceed 50 characters'
+        "any.required":"Please enter surname",
+        'string.empty': 'surname cannot be empty',
+      'string.min': 'surname must be at least 3 characters long',
+      'string.max': 'surname cannot exceed 50 characters'
     }),
 
     email:Joi.string()
@@ -30,11 +30,12 @@ export const registerUserValidationSchema:Joi.ObjectSchema<any>=Joi.object({
     .lowercase()
     .required()
     .messages({
-        "any.required":"Please enter lastname",
-        'string.empty': 'lastname cannot be empty',
-      'string.min': 'lastname must be at least 3 characters long',
-      'string.max': 'lastname cannot exceed 50 characters'
+        "any.required":"Please enter email",
+        'string.empty': 'email cannot be empty',
+      'string.min': 'email must be at least 3 characters long',
+      'string.max': 'email cannot exceed 50 characters'
     }),
+
     username:Joi.string()
     .trim()
     .min(3)
@@ -42,11 +43,12 @@ export const registerUserValidationSchema:Joi.ObjectSchema<any>=Joi.object({
     .pattern(new RegExp('^[a-zA-Z0-9_]+$')) 
     .required()
     .messages({
-        "any.required":"Please enter lastname",
-        'string.empty': 'lastname cannot be empty',
-      'string.min': 'lastname must be at least 3 characters long',
-      'string.max': 'lastname cannot exceed 50 characters'
+        "any.required":"Please enter username",
+        'string.empty': 'username cannot be empty',
+      'string.min': 'username must be at least 3 characters long',
+      'string.max': 'username cannot exceed 50 characters'
     }),
+
     password: Joi.string()
     .trim()
     .min(8)
@@ -60,18 +62,17 @@ export const registerUserValidationSchema:Joi.ObjectSchema<any>=Joi.object({
       'string.max': 'Password cannot exceed 30 characters',
       'string.pattern.base': 'Password must include uppercase, lowercase, number, and special character'
     }),
-    section: Joi.string()
+
+    department: Joi.string()
     .trim()
-    .min(10)
-    .max(40)
     .pattern(new RegExp('^[a-zA-Z ]+$')) 
     .required()
     .messages({
-      'any.required': 'Please enter a password',
-      'string.empty': 'section cannot be empty',
-      'string.min': 'section must be at least 10 characters long',
-      'string.max': 'section cannot exceed 30 characters',
-      'string.pattern.base': 'section can not contain special characters, number'
+      'any.required': 'Please enter a department',
+      'string.empty': 'department cannot be empty',
+      'string.min': 'department must be at least 10 characters long',
+      'string.max': 'department cannot exceed 30 characters',
+      'string.pattern.base': 'department can not contain special characters, number'
     })
 
 })
