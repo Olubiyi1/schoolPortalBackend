@@ -1,6 +1,7 @@
-import { createUser,userLogin, handleForgotPassword, handleResetPassword } from "../services/user.service";
+import { createUser,userLogin, getCurrentUserProfile, handleForgotPassword, handleResetPassword } from "../services/user.service";
 import { Response, Request } from "express";
 import ResponseHandler from "../utils/responseHandlers";
+
 
 
 export const registerUser = async (req:Request, res:Response)=>{
@@ -44,6 +45,22 @@ export const loginUser = async (req:Request,res:Response)=>{
         return ResponseHandler.validationError(res,null,error.message)
     }
 }
+
+// get currentUser profile
+export const getUserProfile = async (req: any, res: Response) => {
+  try {
+    const { error, data } = await getCurrentUserProfile(req.user.id);
+
+    if (error) {
+      return ResponseHandler.validationError(res, null, error);
+    }
+
+    return ResponseHandler.success(res, data, "User profile retrieved successfully");
+  } catch (error: any) {
+    return ResponseHandler.validationError(res, null, error.message);
+  }
+};
+
 
 // forgot password
 export const forgotPassword = async (req: Request, res: Response) => {

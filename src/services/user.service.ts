@@ -96,6 +96,30 @@ export const userLogin = async (email: string, password: string) => {
   }
 };
 
+// to get single user
+export const getCurrentUserProfile = async (userId: string) => {
+  try {
+    const user = await userModel.findById(userId).select('-password -verificationToken -resetPasswordToken');
+    
+    if (!user) {
+      return { error: "User not found", data: null };
+    }
+
+    return {
+      error: null,
+      data: {
+        firstName: user.firstname,
+        surname: user.surname,
+        email: user.email,
+        department: user.department,
+        username: user.username
+      }
+    };
+  } catch (error: any) {
+    return { error: error.message, data: null };
+  }
+};
+
 // FORGOT PASSWORD
 export const handleForgotPassword = async (email: string) => {
   try {
