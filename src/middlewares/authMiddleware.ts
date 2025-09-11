@@ -23,7 +23,15 @@ export const authenticateToken = async (req: AuthRequest, res: Response, next: N
 
     // token verified using my secret key to be sure user is legit signed in
     const decoded = jwt.verify(token, config.secret_key) as any;
+    
+    // debugging to find id
+    console.log("Decoded JWT payload:", decoded);
+    console.log("Looking for user with ID:", decoded.id);
+
     const user  = await userModel.findById(decoded.id).select('-password');
+
+      // debugginh to confirm user
+    console.log("Found user:", user ? "Yes" : "No");
 
     if (!user) {
       return ResponseHandler.validationError(res, null, "User not found");

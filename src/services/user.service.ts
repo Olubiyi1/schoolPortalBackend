@@ -44,7 +44,7 @@ export const createUser = async (userData: IUser) => {
 
     // creatjwt
     const token = createJwt({
-      id: savedUser.id,
+      _id: savedUser.id,
       email: savedUser.email,
     });
 
@@ -87,7 +87,7 @@ export const userLogin = async (email: string, password: string) => {
 
     // creatjwt
     const token = createJwt({
-      id: user.id,
+      _id: user.id,
       email: user.email,
     });
     return { error: null, data: token };

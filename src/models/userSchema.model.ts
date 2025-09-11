@@ -1,4 +1,4 @@
-import { boolean, string } from "joi";
+// import { boolean, string } from "joi";
 import mongoose,{Schema,Document} from "mongoose";
 
 export interface IUser extends Document{
