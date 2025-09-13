@@ -32,6 +32,7 @@ export const authenticateToken = async (req: AuthRequest, res: Response, next: N
 
       // debugginh to confirm user
     console.log("Found user:", user ? "Yes" : "No");
+ 
 
     if (!user) {
       return ResponseHandler.validationError(res, null, "User not found");

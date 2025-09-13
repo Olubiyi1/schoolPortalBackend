@@ -3,7 +3,6 @@ import { Response, Request } from "express";
 import ResponseHandler from "../utils/responseHandlers";
 
 
-
 export const registerUser = async (req:Request, res:Response)=>{
     try{
         const {error,data} = await createUser(req.body)
@@ -90,6 +89,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 
         if (!token || !newPassword) {
             return ResponseHandler.validationError(res, null, "Please provide both token and new password");
+            
         }
 
         const result = await handleResetPassword(token, newPassword);
