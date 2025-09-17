@@ -1,4 +1,5 @@
 // import { boolean, string } from "joi";
+// import { string } from "joi";
 import mongoose,{Schema,Document} from "mongoose";
 
 export interface IUser extends Document{
@@ -8,10 +9,13 @@ export interface IUser extends Document{
     username:string,
     password:string,
     department:string,
+    level:string,
     isVerified: boolean,
     verificationToken?: string;
     resetPasswordToken?: string;
     resetPasswordExpires?: Date;
+
+
 }
 
 const userSchema:Schema = new mongoose.Schema(
@@ -28,7 +32,8 @@ const userSchema:Schema = new mongoose.Schema(
         "email":{
             unique:true,
             type:String,
-            required:[true,"enter email"]
+            required:[true,"enter email"],
+
         },
 
         "username":{
@@ -44,8 +49,16 @@ const userSchema:Schema = new mongoose.Schema(
 
         "department":{
             type:String,
-            required:[true,"enter department"]
+            required:[true,"enter department"],
+            enum:["Electronics", "RAC"]
         },
+
+        "level":{
+            type:String,
+            required:[true, "enter level"],
+            enum:["Tech 1", "Tech 2", "Tech 3"]
+        },
+
         "isVerified":{
             type : Boolean,
             default: false

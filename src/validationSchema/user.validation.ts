@@ -73,6 +73,14 @@ export const registerUserValidationSchema:Joi.ObjectSchema<any>=Joi.object({
       'string.min': 'department must be at least 10 characters long',
       'string.max': 'department cannot exceed 30 characters',
       'string.pattern.base': 'department can not contain special characters, number'
+    }),
+
+    level: Joi.string()
+    .trim()
+    .required()
+    .messages({
+      'any.required': "Please enter your level",
+      'string.empty' : 'depatment cannot be empty',
     })
 
 })
