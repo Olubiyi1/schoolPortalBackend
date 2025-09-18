@@ -1,5 +1,3 @@
-// import { boolean, string } from "joi";
-// import { string } from "joi";
 import mongoose,{Schema,Document} from "mongoose";
 
 export interface IUser extends Document{
@@ -8,13 +6,13 @@ export interface IUser extends Document{
     email:string,
     username:string,
     password:string,
-    department:string,
+    department?:string,
     level:string,
     isVerified: boolean,
     verificationToken?: string;
     resetPasswordToken?: string;
     resetPasswordExpires?: Date;
-
+    role: "student" 
 
 }
 
@@ -74,6 +72,12 @@ const userSchema:Schema = new mongoose.Schema(
         "resetPasswordExpires":{
             type: Date,
             default: null
+        },
+
+        "role":{
+            type: String,
+            enum: ["student"],
+            default: "student"
         }
     },
     {timestamps:true}

@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser"
 import cors from "cors"
 import helmet from "helmet"
 import router from "./routes/user.routes"
+import courseRouter from "./routes/courseRoutes.route"
 
 const app = express()
 app.use(helmet())
@@ -20,6 +21,9 @@ app.use(express.urlencoded({extended:true}))
 
 // routes
 app.use("/api",router)
+
+// course routes
+app.use(courseRouter)
 
 
 export default app;

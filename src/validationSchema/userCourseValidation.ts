@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 export const userCourseValidationSchema: Joi.ObjectSchema<any>=Joi.object({
-    courseTitle: Joi.string()
+    title: Joi.string()
     .trim()
     .min(3)
     .required()
@@ -11,7 +11,7 @@ export const userCourseValidationSchema: Joi.ObjectSchema<any>=Joi.object({
         "string.min": "course tilte cannot be less than 3 characters"
     }),
 
-    courseCode: Joi.string()
+    code: Joi.string()
     .trim()
     .min(3)
     .messages({
@@ -27,6 +27,14 @@ export const userCourseValidationSchema: Joi.ObjectSchema<any>=Joi.object({
         "required.any" : "Pleae enter your level",
         "string.empty": "Level cannot be empty",
         "string.min" : "Level cannot be less than 3 characters"
+    }),
+    semester: Joi.string()
+    .trim()
+    .min(3)
+    .messages({
+        "required.any":"Please enter your semester",
+        "string.empty":"Semester cannot be empty",
+        "string.min" :"Semester cannot be less than 3 characters"
     })
 
 })
