@@ -2,6 +2,7 @@
 import adminModel from '../src/models/adminSchema.model';
 import { hashPassword } from '../src/guards/guards';
 import { connectDb } from "../src/config/Db"
+import config from '../src/config/config';
 
 
 
@@ -24,7 +25,7 @@ const createDefaultAdmin = async () => {
       surname: 'Admin',
       username: 'super_admin',
       email: 'admin@schoolportal.com',
-      password: hashPassword('Admin123'), // default password
+      password: hashPassword(config.admin_password), // default password
       isVerified: true,
       role: 'admin' 
     };

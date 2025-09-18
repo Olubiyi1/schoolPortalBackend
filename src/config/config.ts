@@ -8,5 +8,6 @@ export default{
     mongo_Url : process.env.MONGO_URL as string,
     secret_key : process.env.SECRET as string,
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+    pass: process.env.EMAIL_PASS,
+    admin_password : process.env.ADMIN_PASS as string
 }
