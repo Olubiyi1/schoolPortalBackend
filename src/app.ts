@@ -4,6 +4,7 @@ import cors from "cors"
 import helmet from "helmet"
 import router from "./routes/user.routes"
 import courseRouter from "./routes/courseRoutes.route"
+import adminRouter from "./routes/adminRoutes/admin.routes"
 
 const app = express()
 app.use(helmet())
@@ -24,6 +25,9 @@ app.use("/api",router)
 
 // course routes
 app.use(courseRouter)
+
+// admin routes
+app.use(adminRouter)
 
 
 export default app;
