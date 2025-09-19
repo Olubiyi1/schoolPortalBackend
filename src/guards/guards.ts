@@ -2,7 +2,6 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import config from "../config/config"
 
-// password hash
 
 export const hashPassword = (password:string)=>{
     return bcrypt.hashSync(password,10)
