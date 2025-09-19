@@ -9,7 +9,8 @@ export interface IAdmin extends Document {
   password: string;
   resetPasswordToken?: string;
   resetPasswordExpires?: string;
-  role: "student";
+  isVerified:boolean;
+  role: "admin";
 }
 
 const adminSchema: Schema = new mongoose.Schema({
@@ -21,13 +22,16 @@ const adminSchema: Schema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  
   "email": {
     type: String,
     required: true,
+    unique:true
   },
   "username": {
     type: String,
     required: true,
+    unique:true
   },
   "password":{
     type: String,
@@ -43,6 +47,10 @@ const adminSchema: Schema = new mongoose.Schema({
     type: String,
     enum:["admin"],
     default: true
+  },
+  "isVerified":{
+    type:Boolean,
+    default:true
   }
   
 },{timestamps:true}

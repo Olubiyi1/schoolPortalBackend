@@ -1,4 +1,4 @@
-import { error } from "console";
+// import { error } from "console";
 import userCourse, { ICourse } from "../models/courseSchema.model";
 
 export const createCourse = async (data: ICourse) => {

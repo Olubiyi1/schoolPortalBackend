@@ -12,7 +12,7 @@ const createDefaultAdmin = async () => {
 
   try {
     // Check if admin already exists
-    const existingAdmin = await adminModel.findOne({ email: 'admin@schoolportal.com' });
+    const existingAdmin = await adminModel.findOne({ email: 'jide@schoolportal.com' });
     
     if (existingAdmin) {
       console.log('Admin already exists');
@@ -24,7 +24,7 @@ const createDefaultAdmin = async () => {
       firstname: 'School',
       surname: 'Admin',
       username: 'super_admin',
-      email: 'admin@schoolportal.com',
+      email: 'jide@schoolportal.com',
       password: hashPassword(config.admin_password), // default password
       isVerified: true,
       role: 'admin' 
@@ -34,8 +34,7 @@ const createDefaultAdmin = async () => {
     await admin.save();
     
     console.log('Default admin created successfully');
-    console.log('Email: admin@schoolportal.com');
-    console.log('Password: admin123');
+   
 
     process.exit(1)
     

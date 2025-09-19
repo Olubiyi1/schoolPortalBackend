@@ -20,14 +20,14 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-// routes
+// user routes
 app.use("/api",router)
 
 // course routes
-app.use(courseRouter)
+app.use("/api/courses",courseRouter)
 
 // admin routes
-app.use(adminRouter)
+app.use("/api/admin",adminRouter)
 
 
 export default app;
