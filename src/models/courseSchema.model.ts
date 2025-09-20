@@ -5,7 +5,8 @@ export interface ICourse extends Document{
     title: string,
     code:string,
     level: string,
-    semester: string
+    semester: string,
+    department: string
 }
 
 const courseSchema : Schema = new mongoose.Schema(
@@ -28,6 +29,11 @@ const courseSchema : Schema = new mongoose.Schema(
             type: String,
             required:[true,"enter semester"],
             enum:["First Term", "Second Term", "Third Term"]
+        },
+        department:{
+            type: String,
+            required:[true, "enter your department"],
+            enum:["Electronics works", "RAC"]
         }
     },
     {timestamps:true}

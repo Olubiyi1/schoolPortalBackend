@@ -112,7 +112,9 @@ export const getCurrentUserProfile = async (userId: string) => {
         surname: user.surname,
         email: user.email,
         department: user.department,
-        username: user.username
+        username: user.username,
+        level:user.level,
+        semester:user.semester
       }
     };
   } catch (error: any) {

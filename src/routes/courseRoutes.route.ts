@@ -1,8 +1,10 @@
 
 import express from "express";
-import { addCourse, findCourses, findCoursebyDept_Level } from "../controllers/userCourse.controller";
+import { addCourse, fetchCoursesForStudent } from "../controllers/courseControllers/course.controller";
+// import { addCourse, findCourses, findCoursebyDept_Level } from "../controllers/userCourse.controller";
 import { adminAuthenticateToken } from "../middlewares/adminMiddleware/adminAuth.middleware";
 import { authenticateToken } from "../middlewares/authMiddleware";
+// import { getAllCourses } from "../services/courseServices/course.service";
 
 const courseRouter = express.Router();
 
@@ -13,13 +15,14 @@ courseRouter.get("/", (req, res) => {
 
 //  Admin-only routes //
 
+
 // Add a course (admin only)
-courseRouter.post("/add",adminAuthenticateToken, addCourse);
+courseRouter.post("/add-courses",adminAuthenticateToken, addCourse);
 
 // Get all courses (admin only)
-courseRouter.get("/all",adminAuthenticateToken, findCourses);
+courseRouter.get("/all",authenticateToken, fetchCoursesForStudent);
 
 // Protected route for normal users to get their courses
-courseRouter.get("/my-courses", authenticateToken, findCoursebyDept_Level);
+// courseRouter.get("/my-courses", authenticateToken, findCoursebyDept_Level);
 
 export default courseRouter;

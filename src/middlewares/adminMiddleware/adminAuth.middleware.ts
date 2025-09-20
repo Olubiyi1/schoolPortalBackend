@@ -35,7 +35,7 @@ export const adminAuthenticateToken = async (
 
     // debugging to find id
     console.log("Decoded JWT payload:", decoded);
-    console.log("Looking for user with ID:", decoded._id);
+    console.log("Looking for user with ID:", decoded.id);
 
     const admin = await adminModel.findById(decoded.id).select("-password");
 
@@ -47,6 +47,8 @@ export const adminAuthenticateToken = async (
     }
 
     req.user = admin;
+    console.log("Authenticated Admin:", req.user);
+
     next();
   } catch (error: any) {
     return ResponseHandler.validationError(res, null, "invalide token");
