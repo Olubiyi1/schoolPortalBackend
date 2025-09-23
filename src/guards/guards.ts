@@ -18,7 +18,8 @@ export const createJwt = (user:any)=>{
     const token = jwt.sign(
         {
             id: user._id,
-            email:user.email
+            email:user.email,
+            role:user.role
         },
         config.secret_key,
         {expiresIn:"1d"}

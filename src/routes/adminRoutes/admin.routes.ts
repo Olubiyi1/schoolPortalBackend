@@ -1,6 +1,6 @@
 import express from "express";
 import { loginAdmin } from "../../controllers/adminControllers/admin.controller";
-import { adminAuthenticateToken } from "../../middlewares/adminMiddleware/adminAuth.middleware";
+// import { authorizeAccess } from "../../middlewares/adminMiddleware/authorizeAccess";
 
 const adminRouter = express.Router();
 
@@ -14,3 +14,4 @@ adminRouter.post("/login", loginAdmin);
 
 
 export default adminRouter;
+

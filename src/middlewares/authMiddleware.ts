@@ -43,4 +43,4 @@ export const authenticateToken = async (req: AuthRequest, res: Response, next: N
 }catch(error){
 return ResponseHandler.validationError(res,null,"invalid token")
 }
-}
+};

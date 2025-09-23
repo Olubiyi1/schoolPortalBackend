@@ -8,6 +8,8 @@ export interface IUser extends Document{
     password:string,
     department?:string,
     level:string,
+    admissionNumber?:string,
+    gender?:string,
     semester?: string,
     isVerified: boolean,
     verificationToken?: string;
@@ -56,6 +58,17 @@ const userSchema:Schema = new mongoose.Schema(
             type:String,
             required:[true, "enter level"],
             enum:["Tech 1", "Tech 2", "Tech 3"]
+        },
+
+        admissionNumber:{
+            unique:true,
+            type: String,
+            required:[false,"enter admission number"],
+           
+        },
+        gender:{
+        type: String,
+        required:[false,"enter your gender"]
         },
 
         "semester":{
