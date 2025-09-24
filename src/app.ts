@@ -5,6 +5,7 @@ import helmet from "helmet"
 import router from "./routes/user.routes"
 import courseRouter from "./routes/courseRoutes.route"
 import adminRouter from "./routes/adminRoutes/admin.routes"
+import teacherRouter from "./routes/teachersRoutes/teacher.routes"
 
 const app = express()
 app.use(helmet())
@@ -28,6 +29,9 @@ app.use("/api/courses",courseRouter)
 
 // admin routes
 app.use("/api/admin",adminRouter)
+
+// teacher's route
+app.use("/api/teacher", teacherRouter)
 
 
 export default app;

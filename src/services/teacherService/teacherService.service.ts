@@ -19,6 +19,7 @@ export const teacherLogin = async (email: string, password: string) => {
     const token = createJwt({
       _id: teacher.id,
       email: teacher.email,
+      role: teacher.role
     });
 
     console.log("token", token);

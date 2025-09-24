@@ -5,7 +5,6 @@ export interface ITeacher extends Document{
     surname: string,
     email: string,
     password: string,
-    uername: string,
     isVerified: boolean,
     role: "teacher"
 }
@@ -28,11 +27,6 @@ const teacherSchema:Schema = new mongoose.Schema(
         password:{
             type:String,
             required:[true,"Enter password"]
-        },
-        username:{
-            unique:true,
-            type:String,
-            required:[true,"Enter username"]
         },
         role:{
             type:String,

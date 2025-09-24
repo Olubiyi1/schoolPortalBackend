@@ -13,7 +13,7 @@ export const comparePassword = (password:string,hash:string)=>{
 }
 
 // jwt secret
-// this is basically used for login and when a user is navigating a web
+// this is basically used for sig and when a user is navigating a web
 export const createJwt = (user:any)=>{
     const token = jwt.sign(
         {

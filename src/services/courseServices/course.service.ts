@@ -36,6 +36,7 @@ export const createCourse = async (courseData: any) => {
   }
 };
 
+
 export const getAllCourses = async (filter?: CourseFilter) => {
   try {
     // If no filter is provided, fetch all courses
