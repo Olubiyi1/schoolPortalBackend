@@ -36,7 +36,7 @@ export const adminLogin = async (email: string, password: string) => {
 };
 
 // creating teacher
-// the aprameter teacherData culd be anything but make sure its referenced
+// the parameter teacherData culd be anything but make sure its referenced
 export const createTeacher = async (teacherData: any) => {
   try {
     const existingTeacher = await teacherModel.findOne({
@@ -99,9 +99,44 @@ export const createStudents = async (studentData: any) => {
     // save student
     const savedStudent = await newStudent.save();
     return { error: error, data: savedStudent };
-    
   } catch (error: any) {
     console.log("Teacher creation error:", error);
     return { error: error.message, data: null };
   }
 };
+
+// delete teacher
+export const deleteTeacher = async (id: string) => {
+  try {
+    const deletedTeacher = await teacherModel.findByIdAndDelete(id);
+
+    if(!deletedTeacher){
+
+      return {error:"teacher not found", data:null}
+    }
+    return { error: null, data: deletedTeacher };
+  } catch (error:any) {
+    return { error: error.message, data: null };
+  }
+};
+
+
+// delete student
+
+export const deleteStudent = async(id:string)=>{
+try{
+
+  const deletedStudent = await userModel.findByIdAndDelete(id)
+
+  if(!deletedStudent){
+
+    return {error:"student not found", data:null}
+  }
+  return {error:null, data:deletedStudent}
+
+}
+catch(error:any){
+  return {error:error.message, data:null}
+}
+
+}

@@ -1,5 +1,5 @@
-import { createCourse, getAllCourses } from "../../services/courseServices/course.service";
-import { Request, Response } from "express";
+import { createCourse, getAllCourses, deleteCourse } from "../../services/courseServices/course.service";
+import { Request, response, Response } from "express";
 import ResponseHandler from "../../utils/responseHandlers";
 
 
@@ -20,7 +20,7 @@ interface AuthRequest extends Request<{}, {}, CourseInput> {
 }
 
 
-
+// add courses
 export const addCourse = async (req: AuthRequest, res: Response) => {
   try {
     // Check if user is admin
@@ -30,11 +30,6 @@ export const addCourse = async (req: AuthRequest, res: Response) => {
 }
 
 console.log("Incoming course data:", req.body);
-
-
-    // if (req.user.userType !== 'admin') {
-    //   return ResponseHandler.validationError(res, null, "Access denied. Admin only.");
-    // }
 
     // Validate required fields
     const { title, code, department, level, semester } = req.body;
@@ -58,27 +53,71 @@ console.log("Incoming course data:", req.body);
   }
 };
 
-export const fetchCoursesForStudent = async (req: AuthRequest, res: Response) => {
-  try {
-    if (!req.user) {
-      return ResponseHandler.validationError(res, null, "Access denied");
+// fetch all courses
+export const allStudentCourses = async (req:AuthRequest, res: Response)=>{
+  try{
+
+    if(!req.user){
+      return ResponseHandler.validationError(res,null, "access denied")
     }
-
-    // Optionally, you could filter by student level or department
-    const filter = {
-      department: req.user.department,
-      level: req.user.level,
-    };
-
-    const { error, data } = await getAllCourses(filter);
-
-    if (error) {
-      return ResponseHandler.validationError(res, null, error);
+    const {error,data} = await getAllCourses()
+    if(error){
+      return ResponseHandler.validationError(res,null,error)
     }
-
-    return ResponseHandler.success(res, data, "Courses fetched successfully");
-  } catch (error: any) {
-    console.error("Fetch courses error:", error);
-    return ResponseHandler.validationError(res, null, error.message);
+    return ResponseHandler.success(res,data,"All courses")
   }
-};
+  catch(error:any){
+
+    return ResponseHandler.validationError(res,null, error.message)
+  }
+}
+
+//  delete course
+
+export const deletedCourse = async (req:Request, res:Response)=>{
+
+  try{
+
+    const {id} = req.params
+
+    const {error,data} = await deleteCourse(id);
+
+    if(error){
+      return ResponseHandler.validationError(res,null,"error deleting course")
+    }
+    if(!data){
+      return ResponseHandler.validationError(res,null,"Course not found")
+    }
+    return ResponseHandler.success(res,data,"Course deleted successfully")
+
+  }
+  catch(error:any){
+    return ResponseHandler.validationError(res,null,error.message)
+  }
+}
+
+// fetching courses with filter
+// export const fetchCoursesForStudent = async (req: AuthRequest, res: Response) => {
+//   try {
+//     if (!req.user) {
+//       return ResponseHandler.validationError(res, null, "Access denied");
+//     }
+
+//     // Optionally, you could filter by student level or department
+//     const filter = {
+//       department: req.user.department,
+//       level: req.user.level,
+//     };
+
+//     const { error, data } = await getAllCourses(filter);
+
+//     if (error) {
+//       return ResponseHandler.validationError(res, null, error);
+//     }
+
+//     return ResponseHandler.success(res, data, "Courses fetched successfully");
+//   } catch (error: any) {
+//     console.error("Fetch courses error:", error);
+//     return ResponseHandler.validationError(res, null, error.message);
+//   }
+// };

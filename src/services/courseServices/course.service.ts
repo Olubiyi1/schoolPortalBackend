@@ -1,3 +1,4 @@
+import { error } from "console";
 import userCourse from "../../models/courseSchema.model";
 
 interface CourseFilter {
@@ -6,7 +7,7 @@ interface CourseFilter {
   semester?: string;
 }
 
-
+// create course
 export const createCourse = async (courseData: any) => {
   try {
     // Check if course code already exists
@@ -37,14 +38,34 @@ export const createCourse = async (courseData: any) => {
 };
 
 
-export const getAllCourses = async (filter?: CourseFilter) => {
-  try {
-    // If no filter is provided, fetch all courses
-    const courses = await userCourse.find(filter || {});
-    return { error: null, data: courses };
-  } catch (error: any) {
-    console.error("Error fetching courses:", error.message);
-    return { error: error.message, data: null };
+
+// get all courses
+
+export const getAllCourses = async()=>{
+  try{
+    const courses = await userCourse.find()
+    return {error:null, data: courses}
   }
-};
+  catch(error:any){
+    return {error:error, data:null}
+  }
+}
+
+
+// delete course
+
+export const deleteCourse = async(id: string)=>{
+  try{
+
+    const deletedCourse = await userCourse.findByIdAndDelete(id)
+
+    return {error:null,data:deletedCourse}
+
+  }
+  catch(error:any){
+
+    return {error:error.message,data:null}
+
+  }
+}
 
